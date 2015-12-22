@@ -1,0 +1,2 @@
+E_const = 20
+G_const = 10
