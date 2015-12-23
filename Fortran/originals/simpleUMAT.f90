@@ -60,11 +60,11 @@ subroutine umat(stress,statev,ddsdde,sse,spd,scd,  &
     INTEGER                  :: kstep
     INTEGER                  :: kinc
 
-    print *, 'time: ', time(1)
-    print *, 'statev(k): ', statev
-    print *, 'dstran(k): ', dstran
-    print *, 'stran(k): ', stran
-    print *, 'stress(k): ', stress
+    ! print *, 'time: ', time(1)
+    ! print *, 'statev(k): ', statev
+    ! print *, 'dstran(k): ', dstran
+    ! print *, 'stran(k): ', stran
+    ! print *, 'stress(k): ', stress
 
     !    RECOVER ELASTIC AND PLASTIC STRAINS AND ROTATE FORWARD
     !     ALSO RECOVER EQUIVALENT PLASTIC STRAIN
@@ -124,9 +124,9 @@ subroutine umat(stress,statev,ddsdde,sse,spd,scd,  &
     C_mat(2,2) = ddsdde(5,5)
     C_mat(3,3) = ddsdde(6,6)
 
-    print *,'C_mat: ', C_mat(1,:)
-    print *, C_mat(2,:)
-    print *, C_mat(3,:)
+    ! print *,'C_mat: ', C_mat(1,:)
+    ! print *, C_mat(2,:)
+    ! print *, C_mat(3,:)
 
     ! stress
     Dstress = matmul(ddsdde, dstran) 
@@ -142,8 +142,8 @@ subroutine umat(stress,statev,ddsdde,sse,spd,scd,  &
     ! Yield function
     yieldFunc = norm2(S_trial) - Sy
 
-    print *, 'stress = ', stress
-    print *, 'yieldFunc = ', yieldfunc(1)
+    ! print *, 'stress = ', stress
+    ! print *, 'yieldFunc = ', yieldfunc(1)
     
     ! Plastic corrector step (Return-Mapping Algorithm)
 
@@ -177,31 +177,31 @@ if (yieldFunc(1) > tol) then
         S2 = S(2)
         S3 = S(3)
 
-        print *, 'S1: ', S1
-        print *, 'S2: ', S2
-        print *, 'S3: ', S3
+        ! print *, 'S1: ', S1
+        ! print *, 'S2: ', S2
+        ! print *, 'S3: ', S3
 
         ! Substitute variables
         v1 = S1**2.0 + S2**2.0 + S3**2.0
 
-        print *, 'v1: ', v1
+        ! print *, 'v1: ', v1
 
         ! gradient of yield function with respect to S
         f_S(1) = S1/(v1)**(1.0/2.0)
         f_S(2) = S2/(v1)**(1.0/2.0)
         f_S(3) = S3/(v1)**(1.0/2.0)
 
-        print *, 'f_S: ', f_S(1)
-        print *, f_S(2)
-        print *, f_S(3)
+        ! print *, 'f_S: ', f_S(1)
+        ! print *, f_S(2)
+        ! print *, f_S(3)
 
 
         ! flow vector (normalised f_S)
         r = f_S/norm2(f_S)
 
-        print *, 'r: ', r(1)
-        print *, r(2)
-        print *, r(3)
+        ! print *, 'r: ', r(1)
+        ! print *, r(2)
+        ! print *, r(3)
 
         ! gradient of flow vector with respect to S
 
@@ -254,9 +254,9 @@ if (yieldFunc(1) > tol) then
             S3**3*1.0D0/(v1)**2*2.0D0+S1**2*S3*1.0D0/(v1)**2*2.0D0+&
             S2**2*S3*1.0D0/(v1)**2*2.0D0)*(1.0D0/2.0D0)
 
-        print *,'r_S: ', r_S(1,:)
-        print *, r_S(2,:)
-        print *, r_S(3,:)
+        ! print *,'r_S: ', r_S(1,:)
+        ! print *, r_S(2,:)
+        ! print *, r_S(3,:)
 
         ! derivative of Sy with respect to kap
         Sy_kap = H
@@ -265,7 +265,7 @@ if (yieldFunc(1) > tol) then
         
         f_kap = f_Sy * Sy_kap
 
-        print *,'f_kap: ', f_kap
+        ! print *,'f_kap: ', f_kap
 
         ! gradient of normalised flow vector with respect to Sy
         r_Sy(1) = 0.0
@@ -276,63 +276,63 @@ if (yieldFunc(1) > tol) then
 
         r_kap = r_Sy * Sy_kap
 
-        print *,'r_kap: ', r_kap(1)
-        print *, r_kap(2)
-        print *, r_kap(3)
+        ! print *,'r_kap: ', r_kap(1)
+        ! print *, r_kap(2)
+        ! print *, r_kap(3)
         
         ! inverse of C 
 
         call inverse(C_mat,invC)
 
-        print *, 'invC: ', invC(1,:)
-        print *, invC(2,:)
-        print *, invC(3,:)
+        ! print *, 'invC: ', invC(1,:)
+        ! print *, invC(2,:)
+        ! print *, invC(3,:)
 
         ! increment in plasticity parameter
         
         a_vec = matmul(invC, (S - S_trial)) + Dlam * r
         
-        print *, 'a_vec: ', a_vec
+        ! print *, 'a_vec: ', a_vec
 
         b_vec = -kap + statev(13) + Dlam
         
-        print *, 'b_vec: ', b_vec
+        ! print *, 'b_vec: ', b_vec
 
         invA(1:3,1:3) = invC + Dlam*r_S
         invA(1:3,4) = Dlam*r_kap
         invA(4,4) = -1.0d0
         
-        print *,'invA: ', invA(1,:)
-        print *, invA(2,:)
-        print *, invA(3,:)
-        print *, invA(4,:)
+        ! print *,'invA: ', invA(1,:)
+        ! print *, invA(2,:)
+        ! print *, invA(3,:)
+        ! print *, invA(4,:)
 
         ! A_mat = inverse of invA 
 
         call M44INV (invA, A_mat)
         
-        print *, 'A_mat: ', A_mat(1,:)
-        print *, A_mat(2,:)
-        print *, A_mat(3,:)
-        print *, A_mat(4,:)
+        ! print *, 'A_mat: ', A_mat(1,:)
+        ! print *, A_mat(2,:)
+        ! print *, A_mat(3,:)
+        ! print *, A_mat(4,:)
 
         dellam = (yieldFunc - matmul(matmul((/reshape((/f_S/),(/1,3/)), f_kap/), A_mat), reshape((/a_vec, b_vec/), (/4,1/)))) / &
            (matmul(matmul((/reshape((/f_S/),(/1,3/)), f_kap/), A_mat), reshape((/r, 1.0d0/), (/4,1/))))
 
-        print *, 'dellam: ', dellam
+        ! print *, 'dellam: ', dellam
 
         ! Obtain increments in stress and internal variables
         DSkap = - matmul(A_mat, reshape((/a_vec, b_vec/), (/4,1/))) - dellam(1) * matmul(A_mat, reshape((/r, 1.0d0/), (/4,1/)))
         DS = DSkap(1:3,1)
         Dkap = DSkap(4,1)
 
-        print *, 'DSkap: ', DSkap
+        ! print *, 'DSkap: ', DSkap
 
         ! Update plastic strain and internal variables
         
         Deps_p = matmul(invC, DS)
         
-        print *, 'Deps_p', Deps_p
+        ! print *, 'Deps_p', Deps_p
 
         eps_p(3) = eps_p(3) - Deps_p(1)
         eps_p(5) = eps_p(5) - Deps_p(2)
@@ -352,11 +352,11 @@ if (yieldFunc(1) > tol) then
 
         yieldFunc = norm2(S) - Sy
 
-        print *, 'eps_p(k+1): ', eps_p
-        print *, 'eps_e(k+1)', eps_e
-        print *, 'kap: ', kap
-        print *, 'Dlam: ', Dlam
-        print *, 'S: ', S
+        ! print *, 'eps_p(k+1): ', eps_p
+        ! print *, 'eps_e(k+1)', eps_e
+        ! print *, 'kap: ', kap
+        ! print *, 'Dlam: ', Dlam
+        ! print *, 'S: ', S
         print *, 'yieldFunc: ', yieldFunc
 
     end do! for k=1 : Newton
@@ -381,9 +381,9 @@ if (yieldFunc(1) > tol) then
         C_algd = (matmul(reshape((/f_S/),(/1,3/)), matmul(C_mod,r)) - f_kap)
         C_alg = C_mod - ((matmul(reshape(matmul(C_mod,r), (/3,1/)), matmul(reshape((/f_S/),(/1,3/)),C_mod)))) / C_algd(1)
 
-        ! print *, 'C_alg: ', C_alg(1,:)
-        ! print *, C_alg(2,:)
-        ! print *, C_alg(3,:)
+        print *, 'C_alg: ', C_alg(1,:)
+        print *, C_alg(2,:)
+        print *, C_alg(3,:)
 
         ddsdde(3,3) = C_alg(1,1)
         ddsdde(3,5) = C_alg(1,2)
@@ -415,10 +415,10 @@ end if! if yieldFunc > tol (plasticity)
 !     print *, ddsdde(4,:)
 !     print *, ddsdde(5,:)
 !     print *, ddsdde(6,:)
-    print *, 'statev(k+1): ', statev
-    print *, ''
-    print *, 'stress(k+1): ', stress
-    print *, ''
+    ! print *, 'statev(k+1): ', statev
+    ! print *, ''
+    ! print *, 'stress(k+1): ', stress
+    ! print *, ''
     do k1=1,13
       if (isnan(statev(k1))) then
         pause

@@ -1,4 +1,5 @@
-    ! rm a.out & gf input.f90 simpleUMAT.f90 && ./a.out
+    ! rm a.out & gfortran simpleInput.f90 finalUMAT.f90 && ./a.out
+    ! rm a.out & gfortran simpleInput.f90 simpleUMAT.f90 && ./a.out
 
 program program_1
 
@@ -13,7 +14,7 @@ program program_1
     integer, parameter :: i = 5
 
     integer, parameter :: ndi = 3, ntens = 6, nprops = 0
-    real (kind=8):: t_data(5), eps33_data(5), eps13_data(5), eps23_data(5)
+    real (kind=8):: t_data(3), eps33_data(3), eps13_data(3), eps23_data(3)
 
     ! total number of intervals
     integer, parameter :: ii = size(t_data)+(i-1)*(size(t_data)-1)
@@ -55,12 +56,12 @@ program program_1
     INTEGER                  :: kstep
     INTEGER                  :: kinc
 
-    t_data = (/0.0, 5.0, 15.0, 25.0, 35.0/)
+    t_data = (/0.0, 5.0, 10.0/)
 
     ! strain input
-    eps33_data = (/0.0, 0.005, -0.005, 0.005, -0.005/)
-    eps13_data = (/0.0, 0.0, 0.0, 0.0, 0.0/)
-    eps23_data = (/0.0, 0.0, 0.0, 0.0, 0.0/)
+    eps33_data = (/0.0, -0.005, 0.0/)
+    eps13_data = (/0.0, 0.000, 0.0/) ! (/0.0, 0.000, 0.0)
+    eps23_data = (/0.0, 0.0, 0.0/)
 
     ! linear interpolation
     DO  k1=1,11
