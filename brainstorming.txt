@@ -1,2 +1,5 @@
-E_const = 20
-G_const = 10
+TODO:
+update README.md
+refactoring
+add master's thesis
+

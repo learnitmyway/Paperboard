@@ -30,7 +30,7 @@ subroutine umat(stress,statev,ddsdde,stran,dstran,time,nstatv)
     ! print *, 'time: ', time(1)
     ! print *, 'statev(k): ', statev
     ! print *, 'dstran(k): ', dstran
-    print *, 'stran(k): ', stran
+    ! print *, 'stran(k): ', stran
     ! print *, 'stress(k): ', stress
 
     ! initialise elastic and plastic strains
@@ -366,8 +366,9 @@ end if! if yieldFunc > tol (plasticity)
     ! print *, ddsdde(6,:)
     ! print *, 'statev(k+1): ', statev
     ! print *, ''
-    print *, 'stress(k+1): ', stress
-    print *, ''
+    ! print *, 'stress(k+1): ', stress
+    ! print *, ''
+
     do k1=1,13
       if (isnan(statev(k1))) then
         print*, 'Warning: NaN'

@@ -8,9 +8,9 @@ program input
     integer :: n
 
     ! number of increments per time interval
-    integer, parameter :: i = 5
+    integer, parameter :: i = 50
 
-    real (kind=8):: t_data(2), eps33_data(2), eps13_data(2), eps23_data(2)
+    real (kind=8):: t_data(5), eps33_data(5), eps13_data(5), eps23_data(5)
 
     ! total number of intervals
     integer, parameter :: ii = size(t_data)+(i-1)*(size(t_data)-1)
@@ -27,12 +27,12 @@ program input
 
     ! print *, 'ii: ', ii
 
-    t_data = (/0.0, 5.0/) ! (/0.0, 5.0, 15.0, 25.0, 35.0/)
+    t_data = (/0.0, 5.0, 15.0, 25.0, 35.0/) ! (/0.0, 5.0, 15.0, 25.0, 35.0/)
 
     ! strain input
-    eps33_data = (/0.0, 0.005/) ! (/0.0, 0.005, -0.005, 0.005, -0.005/)
-    eps13_data = (/0.0, 0.0/) ! (/0.0, 0.0, 0.0, 0.0, 0.0/) 
-    eps23_data = (/0.0, 0.0/)
+    eps33_data = (/0.0, 0.005, -0.005, 0.005, -0.005/) ! (/0.0, 0.005, -0.005, 0.005, -0.005/)
+    eps13_data = (/0.0, 0.0, 0.0, 0.0, 0.0/) ! (/0.0, 0.0, 0.0, 0.0, 0.0/) 
+    eps23_data = (/0.0, 0.0, 0.0, 0.0, 0.0/)
 
     ! linear interpolation
     time = 0.0
@@ -88,21 +88,22 @@ program input
         stran(:,n+1),dstran(:,n+1),time(:,n+1), nstatv)
 
         remainder = modulo(n,i)
+
         ! print *, 'remainder(n+1): ', remainder
         ! print *, 
-        ! if (remainder == 0) then
-        !     print *, 'remainder(n+1): ', remainder
-        !     print *, 
-            ! print *, 'time(n+1): ', time(:,n+1)
+
+        if (remainder == 0) then
+            ! print *, 'remainder(n+1): ', remainder
             ! print *, 
-            ! print *, 'stran(n+1): ', stran(:,n+1)
-            ! print *, 
+            print *, 'time(n+1): ', time(:,n+1)
+            print *, 'stran(n+1): ', stran(:,n+1)
             ! print *, 'dstran(n+1): ', dstran(:,n+1)
             ! print *, 
             ! print *, 'statev(n+1): ', statev(:,n+1)
             ! print *, 
-            ! print *, 'stress(n+1): ', stress(:,n+1)
-        ! end if
+            print *, 'stress(n+1): ', stress(:,n+1)
+            print *, 
+        end if
 
     end do
 
